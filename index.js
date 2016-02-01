@@ -16,7 +16,7 @@ if (impl.init) {
   rootPromise = impl.init();
 }
 
-module.exports = exports = DirSwapper;
+module.exports = exports = Montana;
 
 var kCwd = Symbol('cwd');
 var kDirectory = Symbol('directory');
@@ -25,7 +25,7 @@ var kStorage = Symbol('storage');
 var kResolvedStorage = Symbol('resolvedStorage');
 var kOptions = Symbol('options');
 
-function DirSwapper(directory, storage, options) {
+function Montana(directory, storage, options) {
   options = options || {};
   this[kOptions] = options;
   this[kCwd] = options.cwd || process.cwd();
@@ -48,8 +48,8 @@ function wrapPrototypeFunction(fn) {
   };
 }
 
-DirSwapper.prototype = {
-  constructor: DirSwapper,
+Montana.prototype = {
+  constructor: Montana,
 
   hasVersion: wrapPrototypeFunction(function hasVersion(name) {
     return impl.exists(this.getVersionPath(name));
@@ -102,5 +102,4 @@ DirSwapper.prototype = {
   })
 };
 
-DirSwapper.prototype.unmount = DirSwapper.prototype.umount;
-
+Montana.prototype.unmount = Montana.prototype.umount;

@@ -1,7 +1,7 @@
 {
-  "name": "dirswap",
+  "name": "montana",
   "version": "0.1.0",
-  "description": "Instantly swap different versions of a directory",
+  "description": "Cache a directory and instantly swap versions using mounts",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,10 @@
   "keywords": [
     "directory",
     "swap",
-    "mount"
+    "mount",
+    "bindfs",
+    "fusermount",
+    "hdiutil"
   ],
   "author": "Bram Gotink <bram@gotink.me>",
   "license": "MIT",
