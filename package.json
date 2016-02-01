@@ -1,0 +1,20 @@
+{
+  "name": "dirswap",
+  "version": "0.1.0",
+  "description": "Instantly swap different versions of a directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "directory",
+    "swap",
+    "mount"
+  ],
+  "author": "Bram Gotink <bram@gotink.me>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^0.26.5",
+    "fs-promise": "^0.4.1"
+  }
+}
