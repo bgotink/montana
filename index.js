@@ -11,8 +11,9 @@ try {
   process.exit(1);
 }
 
+var rootPromise = Promise.resolve();
 if (impl.init) {
-  impl.init();
+  rootPromise = impl.init();
 }
 
 module.exports = exports = DirSwapper;
@@ -36,43 +37,54 @@ function DirSwapper(directory, storage, options) {
   this[kResolvedStorage] = path.resolve(this[kCwd], storage);
 }
 
+function wrapPrototypeFunction(fn) {
+  return function wrappedFunction() {
+    var args = Array.prototype.slice.call(arguments);
+    var self = this;
+
+    return rootPromise.then(function () {
+      return fn.apply(self, args);
+    });
+  };
+}
+
 DirSwapper.prototype = {
   constructor: DirSwapper,
 
-  hasVersion: function hasVersion(name) {
+  hasVersion: wrapPrototypeFunction(function hasVersion(name) {
     return impl.exists(this.getVersionPath(name));
-  },
+  }),
 
   getVersionPath: function getVersionPath(name) {
     return path.join(this[kResolvedStorage], name);
   },
 
-  isActive: function isActive() {
+  isActive: wrapPrototypeFunction(function isActive() {
     return impl.isMounted(this[kResolvedDirectory]);
-  },
+  }),
 
-  umount: function unlink() {
+  umount: wrapPrototypeFunction(function umount() {
     return this.isActive().then(function (active) {
       if (active) {
         return impl.unmount(this[kResolvedDirectory]);
       }
     }.bind(this));
-  },
+  }),
 
-  mount: function link(version) {
+  mount: wrapPrototypeFunction(function link(version) {
     return this.hasVersion(version).then(function (hasVersion) {
       if (!hasVersion) {
         throw new Error('Unknown version ' + version + ' in ' + this[kStorage]);
       }
 
-      return this.unlink();
+      return this.umount();
     }.bind(this))
     .then(function () {
       return impl.mount(this.getVersionPath(version), this[kResolvedDirectory]);
     }.bind(this));
-  },
+  }),
 
-  create: function create(version) {
+  create: wrapPrototypeFunction(function create(version) {
     return Promise.all([
       this.hasVersion(version),
       this.isActive()
@@ -87,7 +99,8 @@ DirSwapper.prototype = {
 
       return impl.create(this.getVersionPath(version), this[kResolvedDirectory]);
     }.bind(this));
-  }
+  })
 };
 
 DirSwapper.prototype.unmount = DirSwapper.prototype.umount;
+
