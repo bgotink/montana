@@ -20,5 +20,6 @@
     "fs-extra": "^0.26.5",
     "fs-promise": "^0.4.1",
     "which": "^1.2.4"
-  }
+  },
+  "repository": "bgotink/montana"
 }
