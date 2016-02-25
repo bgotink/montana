@@ -1,6 +1,6 @@
 {
   "name": "montana",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cache a directory and instantly swap versions using mounts",
   "main": "index.js",
   "scripts": {
